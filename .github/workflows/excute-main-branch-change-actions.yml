@@ -1,14 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Execute Change Actions of Main Branch
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  # pull_request:
-  #   branches: ["main"]
     # paths: ["api/rest"]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -72,13 +70,3 @@ jobs:
         run: |
           echo "The Async Files Have changed we might need to run some command here"
           echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
-
-      # Apply Yaml Linter on the Res Files If Changed
-      - name: Apply Yaml Linter on All Yaml Files Available in api directory
-        uses: karancode/yamllint-github-action@master
-        with:
-          yamllint_file_or_dir: "api"
-          yamllint_strict: false
-          yamllint_comment: true
-        env:
-          GITHUB_ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
