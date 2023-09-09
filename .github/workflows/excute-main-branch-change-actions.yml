@@ -73,6 +73,8 @@ jobs:
           echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
           cd api/rest
           mvn --batch-mode --update-snapshots deploy -Dapp.version=${{steps.read-rest-meta-properties.outputs.result}}
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
 
       # - name: Copy Rest Artifacts
       #   if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
