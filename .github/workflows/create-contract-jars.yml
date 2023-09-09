@@ -39,11 +39,33 @@ jobs:
           echo Trying to validate the change on the path api/rest
 
       - name: Get changed files
-        id: changed-files
+        id: changed-files-yaml
         uses: tj-actions/changed-files@v39
+        with:
+          files_yaml: |
+            rest:
+              - api/rest/**
+            async:
+              - api/async/**
+            database:
+              - database/**
 
+      # Print all the files that are changed
       - name: List all changed files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files-yaml.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+
+      # Check if the Rest Contract Files have been changed to prepare the artifacts
+      - name: Check Rest Api Contract Files
+        if: steps.changed-files-yaml.outputs.rest_any_changed == true
+        run: |
+          echo "The Rest Files Have changed we might need to run some command here"
+
+      # Check if the Rest Contract Files have been changed to prepare the artifacts
+      - name: Check Async Api Contract Files
+        if: steps.changed-files-yaml.outputs.async_any_changed == true
+        run: |
+          echo "The Async Files Have changed we might need to run some command here"
+      
