@@ -66,7 +66,7 @@ jobs:
         id: read-meta-properties
         uses: mikefarah/yq@master
         with:
-          cmd: yq '.app.name' 'api/rest/metadata.yml'
+          cmd: yq '.app' 'api/rest/metadata.yml'
 
       - name: Print Meta data Yaml file contents
         run: |
