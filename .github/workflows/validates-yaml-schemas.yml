@@ -64,13 +64,10 @@ jobs:
       # Demo change to see and read the yml file properties
       - name: Read Meta Properties
         id: read-meta-properties
-        uses: pietrobolcato/action-read-yaml@1.0.0
+        uses: mikefarah/yq@master
         with:
-          config: ${{ github.workspace }}/api/rest/metadata.yml
+          cmd: yq e '.command' 'api/rest/metadata.yml'
 
       - name: Print Meta data Yaml file contents
         run: |
-          echo ${{steps.read-meta-properties.outputs['app.name']}}
-          echo ${{steps.read-meta-properties.outputs['app.description']}}
-          echo ${{steps.read-meta-properties.outputs['app.artifactId']}}
-          echo ${{steps.read-meta-properties.outputs['app.version']}}
+          echo ${{steps.read-meta-properties.outputs.result}}
