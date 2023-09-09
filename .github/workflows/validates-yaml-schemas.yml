@@ -81,4 +81,4 @@ jobs:
       - name: Build with Maven
         run: |
           cd api/rest
-          mvn --batch-mode --update-snapshots package -Dversion=${{steps.read-meta-properties.outputs.result}}
+          mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-meta-properties.outputs.result}}
