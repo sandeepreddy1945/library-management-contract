@@ -46,14 +46,14 @@ jobs:
               - database/**
 
       #Read the Rest Api Contract Version from Metadata File
-      - name: Read Meta Properties
+      - name: Read Rest Meta Properties
         id: read-rest-meta-properties
         uses: mikefarah/yq@master
         with:
           cmd: yq e '.app.version' 'api/rest/metadata.yml'
 
       # Read the Async Api Contract from the Metadata File   
-      - name: Read Meta Properties
+      - name: Read Async Meta Properties
         id: read-async-meta-properties
         uses: mikefarah/yq@master
         with:
@@ -73,7 +73,15 @@ jobs:
           echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
           cd api/rest
           mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-rest-meta-properties.outputs.result}}
+          mkdir rest-staging 
+          cp target/*.jar rest-staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: rest-staging 
 
+     
+        
       # Check if the Async Contract Files have been changed to prepare the artifacts
       - name: Execute Jar Actions on Async Api Contract If Changed
         if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
@@ -82,3 +90,9 @@ jobs:
           echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
           cd api/async
           mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
+          mkdir async-staging 
+          cp target/*.jar async-staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: async-staging       
