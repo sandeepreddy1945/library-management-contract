@@ -45,16 +45,40 @@ jobs:
             database:
               - database/**
 
-      # Check if the Rest Contract Files have been changed to prepare the artifacts
-      - name: Check Rest Api Contract Files
-        if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
-        run: |
-          echo "The Rest Files Have changed we might need to run some command here"
-          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
+      #Read the Rest Api Contract Version from Metadata File
+      - name: Read Meta Properties
+        id: read-rest-meta-properties
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq e '.app.version' 'api/rest/metadata.yml'
+
+      # Read the Async Api Contract from the Metadata File   
+      - name: Read Meta Properties
+        id: read-async-meta-properties
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq e '.app.version' 'api/async/metadata.yml' 
+      # Set's up JDK , Ant , Maven and other required Java Artifacts        
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
       # Check if the Rest Contract Files have been changed to prepare the artifacts
-      - name: Check Async Api Contract Files
+      - name: Execute Jar Actions on Rest Api Contract If Changed
+        if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
+        run: |
+          echo "The Rest Contract Files Have changed"
+          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
+          cd api/rest
+          mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-rest-meta-properties.outputs.result}}
+
+      # Check if the Async Contract Files have been changed to prepare the artifacts
+      - name: Execute Jar Actions on Async Api Contract If Changed
         if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
         run: |
-          echo "The Async Files Have changed we might need to run some command here"
+          echo "The Async Contract Files Have changed "
           echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
+          cd api/async
+          mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
