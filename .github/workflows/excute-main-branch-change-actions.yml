@@ -88,22 +88,22 @@ jobs:
      
         
       # Check if the Async Contract Files have been changed to prepare the artifacts
-      - name: Execute Jar Actions on Async Api Contract If Changed
-        if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
-        run: |
-          echo "The Async Contract Files Have changed "
-          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
-          cd api/async
-          mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
-          mkdir async-staging 
-          cp target/*.jar async-staging
-      - name: Copy Async Artifacts
-        if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
-        run: |
-          echo "Copying Async Artifacts as they are changed"  
-          mkdir async-staging 
-          cp api/async/target/*.jar async-staging
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: async-staging       
+      # - name: Execute Jar Actions on Async Api Contract If Changed
+      #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
+      #   run: |
+      #     echo "The Async Contract Files Have changed "
+      #     echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
+      #     cd api/async
+      #     mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
+      #     mkdir async-staging 
+      #     cp target/*.jar async-staging
+      # - name: Copy Async Artifacts
+      #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
+      #   run: |
+      #     echo "Copying Async Artifacts as they are changed"  
+      #     mkdir async-staging 
+      #     cp api/async/target/*.jar async-staging
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: Package
+      #     path: async-staging       
