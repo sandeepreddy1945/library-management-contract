@@ -50,12 +50,12 @@ jobs:
             database:
               - database/**
 
-      # Print all the files that are changed
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files-yaml.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+      # # Print all the files that are changed
+      # - name: List all changed files
+      #   run: |
+      #     for file in ${{ steps.changed-files-yaml.outputs.all_changed_files }}; do
+      #       echo "$file was changed"
+      #     done
 
       # Check if the Rest Contract Files have been changed to prepare the artifacts
       - name: Check Rest Api Contract Files
