@@ -1,0 +1,84 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # push:
+  #   branches: [ "main" ]
+  pull_request:
+    branches: ["main"]
+    # paths: ["api/rest"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  detect-changes:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+       # Apply Yaml Linter on the Res Files If Changed
+      # - name: Apply Yaml Linter on All Yaml Files Available in api directory
+      #   uses: karancode/yamllint-github-action@master
+      #   with:
+      #     yamllint_file_or_dir: "api"
+      #     yamllint_strict: false
+      #     yamllint_comment: true
+      #   env:
+      #     GITHUB_ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+
+      # # Runs a single command using the runners shell
+      # - name: Print Job Information
+      #   run: Running rest contract file generation change
+
+      # Runs a set of commands using the runners shell
+      - name: Print Job Information
+        run: |
+          echo Running rest contract file generation change
+          echo Trying to validate the change on the path api/rest
+
+      - name: Get changed files
+        id: changed-files-yaml
+        uses: tj-actions/changed-files@v39
+
+      # Print all the files that are changed
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files-yaml.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      # # Demo change to see and read the yml file properties
+      # - name: Read Meta Properties
+      #   id: read-meta-properties
+      #   uses: mikefarah/yq@master
+      #   with:
+      #     cmd: yq e '.app.version' 'api/rest/metadata.yml'
+
+      # - name: Print Meta data Yaml file contents
+      #   run: |
+      #     echo ${{steps.read-meta-properties.outputs.result}}
+
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin'
+
+      # - name: Build with Maven
+      #   run: |
+      #     cd api/rest
+      #     mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-meta-properties.outputs.result}}
