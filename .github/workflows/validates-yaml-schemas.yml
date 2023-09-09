@@ -70,4 +70,4 @@ jobs:
 
       - name: Print Meta data Yaml file contents
         run: |
-          echo ${{steps.read-meta-properties.outputs.result}}
+          echo ${{steps.read-meta-properties.outputs.result.version}}
