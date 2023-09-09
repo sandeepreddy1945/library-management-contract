@@ -90,15 +90,16 @@ jobs:
      
         
       # Check if the Async Contract Files have been changed to prepare the artifacts
-      # - name: Execute Jar Actions on Async Api Contract If Changed
-      #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
-      #   run: |
-      #     echo "The Async Contract Files Have changed "
-      #     echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
-      #     cd api/async
-      #     mvn --batch-mode --update-snapshots package -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
-      #     mkdir async-staging 
-      #     cp target/*.jar async-staging
+      - name: Execute Jar Actions on Async Api Contract If Changed
+        if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
+        run: |
+          echo "The Async Contract Files Have changed "
+          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
+          cd api/async
+          mvn --batch-mode --update-snapshots deploy -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
+          env:
+            GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+
       # - name: Copy Async Artifacts
       #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
       #   run: |

@@ -1,5 +1,5 @@
 app:
-  version: 1.0.2
+  version: 1.0.0
   name: library-management-async-contract
   description: A library Management Project Main Interface Contract
   groupId: com.aaptha.library.management

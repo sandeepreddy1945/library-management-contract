@@ -8,7 +8,7 @@
     <version>${app.version}</version>
     <properties>
         <app.groupId>com.aaptha.library.management</app.groupId>
-        <app.artifactId>library-management-contract</app.artifactId>
+        <app.artifactId>library-management-rest-contract</app.artifactId>
         <app.version>1.0</app.version>
     </properties>
 
