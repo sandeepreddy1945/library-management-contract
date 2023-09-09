@@ -27,11 +27,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      # # Runs a single command using the runners shell
-      # - name: Print Job Information
-      #   run: Running rest contract file generation change
-
       # Runs a set of commands using the runners shell
       - name: Print Job Information
         run: |
@@ -49,13 +44,6 @@ jobs:
               - api/async/**
             database:
               - database/**
-
-      # # Print all the files that are changed
-      # - name: List all changed files
-      #   run: |
-      #     for file in ${{ steps.changed-files-yaml.outputs.all_changed_files }}; do
-      #       echo "$file was changed"
-      #     done
 
       # Check if the Rest Contract Files have been changed to prepare the artifacts
       - name: Check Rest Api Contract Files

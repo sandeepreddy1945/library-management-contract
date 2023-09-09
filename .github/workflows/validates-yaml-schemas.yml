@@ -53,14 +53,6 @@ jobs:
       - name: Get changed files
         id: changed-files-yaml
         uses: tj-actions/changed-files@v39
-        # with:
-        #   files_yaml: |
-        #     rest:
-        #       - api/rest/**
-        #     async:
-        #       - api/async/**
-        #     database:
-        #       - database/**
 
       # Print all the files that are changed
       - name: List all changed files
@@ -69,16 +61,13 @@ jobs:
             echo "$file was changed"
           done
 
-      # Check if the Rest Contract Files have been changed to prepare the artifacts
-      # - name: Check Rest Api Contract Files
-      #   if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
-      #   run: |
-      #     echo "The Rest Files Have changed we might need to run some command here"
-      #     echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
+      # Demo change to see and read the yml file properties
+      - name: Read Meta Properties
+        id: read-meta-properties
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq 'api/rest/metadata.yml'
 
-      # # Check if the Rest Contract Files have been changed to prepare the artifacts
-      # - name: Check Async Api Contract Files
-      #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
-      #   run: |
-      #     echo "The Async Files Have changed we might need to run some command here"
-      #     echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
+      - name: Print Meta data Yaml file contents
+        run: |
+          echo ${{steps.read-meta-properties.outputs.result}}
