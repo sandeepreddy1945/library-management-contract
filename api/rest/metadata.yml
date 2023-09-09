@@ -6,5 +6,10 @@ app:
   artifactId: library-management-rest-contract
   type: rest
   file: openapi.yml
-command: mvn clean install -DartifactId=${app:artifactId} -DgroupId=${app:groupId} -Dversion=${app:version}
+version: 1.0.1
+name: library-management-rest-contract
+description: A library Management Project Main Interface Contract
+groupId: com.aaptha.library.management
+artifactId: library-management-rest-contract
+command: mvn clean install -DartifactId=${artifactId} -DgroupId=${groupId} -Dversion=${version}
     
