@@ -59,13 +59,15 @@ jobs:
 
       # Check if the Rest Contract Files have been changed to prepare the artifacts
       - name: Check Rest Api Contract Files
-        if: steps.changed-files-yaml.outputs.rest_any_changed == true
+        if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
         run: |
           echo "The Rest Files Have changed we might need to run some command here"
+          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.rest_all_changed_files }}"
 
       # Check if the Rest Contract Files have been changed to prepare the artifacts
       - name: Check Async Api Contract Files
-        if: steps.changed-files-yaml.outputs.async_any_changed == true
+        if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
         run: |
           echo "The Async Files Have changed we might need to run some command here"
+          echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.async_all_changed_files }}"
       
