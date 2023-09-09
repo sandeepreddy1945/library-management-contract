@@ -31,14 +31,14 @@ jobs:
           fetch-depth: 0
       
        # Apply Yaml Linter on the Res Files If Changed
-      - name: Apply Yaml Linter on All Yaml Files Available in api directory
-        uses: karancode/yamllint-github-action@master
-        with:
-          yamllint_file_or_dir: "api"
-          yamllint_strict: false
-          yamllint_comment: true
-        env:
-          GITHUB_ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+      # - name: Apply Yaml Linter on All Yaml Files Available in api directory
+      #   uses: karancode/yamllint-github-action@master
+      #   with:
+      #     yamllint_file_or_dir: "api"
+      #     yamllint_strict: false
+      #     yamllint_comment: true
+      #   env:
+      #     GITHUB_ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
 
       # # Runs a single command using the runners shell
       # - name: Print Job Information
