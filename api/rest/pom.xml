@@ -50,5 +50,13 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/sandeepreddy1945/library-management-contract</url>
+            <layout>default</layout>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+    </distributionManagement>
 </project>
