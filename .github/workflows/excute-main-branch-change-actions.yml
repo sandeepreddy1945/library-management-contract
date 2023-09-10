@@ -75,20 +75,6 @@ jobs:
           mvn --batch-mode --update-snapshots deploy -Dapp.version=${{steps.read-rest-meta-properties.outputs.result}}
         env:
           GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
-
-      # - name: Copy Rest Artifacts
-      #   if: steps.changed-files-yaml.outputs.rest_any_changed == 'true'
-      #   run: |
-      #     echo "Copying Rest Artifacts as they are changed"  
-      #     mkdir rest-staging 
-      #     cp api/rest/target/*.jar rest-staging
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Package
-      #     path: rest-staging 
-
-     
-        
       # Check if the Async Contract Files have been changed to prepare the artifacts
       - name: Execute Jar Actions on Async Api Contract If Changed
         if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
@@ -99,14 +85,3 @@ jobs:
           mvn --batch-mode --update-snapshots deploy -Dapp.version=${{steps.read-async-meta-properties.outputs.result}}
         env:
           GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
-
-      # - name: Copy Async Artifacts
-      #   if: steps.changed-files-yaml.outputs.async_any_changed == 'true'
-      #   run: |
-      #     echo "Copying Async Artifacts as they are changed"  
-      #     mkdir async-staging 
-      #     cp api/async/target/*.jar async-staging
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Package
-      #     path: async-staging       
