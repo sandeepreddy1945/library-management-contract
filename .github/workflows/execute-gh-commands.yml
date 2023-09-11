@@ -37,11 +37,9 @@ jobs:
           GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
 
       - name: Create Release 
-        if: github.event.issue.id
+        if: contains(github.event.issue.labels.*.name, 'release-type-current ') 
         run: |
             echo "creating release v0.0.1 for issue ${{github.event.issue.id}}"
-            echo "lables on github issue in context ${{github.event.issue.labels.*.name}}"
-            gh --version
-            # gh release create v0.0.1
+            echo "Contains release type current"
         env:
           GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
