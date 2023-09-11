@@ -8,10 +8,10 @@ on:
   issues: 
     types:  
         - labeled
-        - edited
-        - unlabeled
-        - reopened
-        - opened
+        # - edited
+        # - unlabeled
+        # - reopened
+        # - opened
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -50,10 +50,9 @@ jobs:
       - name: Add Comments to the ticket for Release Preparation
         run: |
             echo gh --version
-            body_comment = ""
             gh issue comment ${{github.event.issue.number}} -b ":rocket: Hola! Welcome To The Release Preparation. Just sit back and relax while we prepare the release for you. We will Notify you here once the Release Process is complete."
             gh issue comment ${{github.event.issue.number}} -b "Triggering Release Process with Type: ${RELEASE_TYPE}"
-            env: 
+        env: 
             GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
 
 
@@ -71,3 +70,5 @@ jobs:
         run: |
             gh issue comment ${{github.event.issue.number}} -b ":rocket: The release process is successfully completed. No Action Required from user end. This ticket will be auto-closed. Please Re-Open the ticket In Case any Further Release is required."
             gh issue close ${{github.event.issue.number}} -r "Completed"
+        env: 
+            GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
