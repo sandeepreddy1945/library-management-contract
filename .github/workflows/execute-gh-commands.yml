@@ -40,6 +40,6 @@ jobs:
         run: |
             echo creating release v0.0.1
             gh --version
-            gh create release v0.0.1
+            gh release create v0.0.1
         env:
           GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
