@@ -33,3 +33,5 @@ jobs:
         run: |
             gh --version
             gh issue list --label bug
+        env:
+          GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
