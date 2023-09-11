@@ -10,6 +10,7 @@ on:
         - labeled
         - edited
         - unlabeled
+        - reopened
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,7 +20,7 @@ jobs:
   # This workflow contains a single job called "build"
   detect-changes:
     # Only run the job when these labels are detected on the issue
-    if: contains(github.event.issue.labels.*.name, 'release-type-current') && contains(github.event.issue.labels.*.name, 'create-release')
+    if: ((contains(github.event.issue.labels.*.name, 'release-type-current') && contains(github.event.issue.labels.*.name, 'create-release'))) && (contains(github.event.issue.labels.*.name, 'major') || contains(github.event.issue.labels.*.name, 'minor')) 
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
@@ -45,6 +46,16 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'minor')
         run: |
             echo "RELEASE_TYPE=minor" >> "$GITHUB_ENV"    
+      - name: Add Comments to the ticket for Release Preparation
+        run: |
+            echo gh --version
+            body_comment = ""
+            gh issue comment ${{github.event.issue.number}} -b ":rocket: Hola! Welcome To The Release Preparation. Just sit back and relax while we prepare the release for you. We will Notify you here once the Release Process is complete."
+            gh issue comment ${{github.event.issue.number}} -b "Triggering Release Process with Type: ${RELEASE_TYPE}"
+            env: 
+            GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
+
+
       # Refer here for documentation on this runner: https://github.com/zendesk/action-create-release/tree/master#example-workflow---create-a-release
       - name: Create Release With Tag
         id: create-release
@@ -54,4 +65,8 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
-          
+
+      - name: Comment and Close the Release Issue
+        run: |
+            gh issue comment ${{github.event.issue.number}} -b ":rocket: The release process is successfully completed. No Action Required from user end. This ticket will be auto-closed. Please Re-Open the ticket In Case any Further Release is required."
+            gh issue close ${{github.event.issue.number}} -r "Completed"
