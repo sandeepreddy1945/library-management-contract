@@ -51,4 +51,6 @@ jobs:
         with:
           auto_increment_type: prerelease
           prerelease: true
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
           
