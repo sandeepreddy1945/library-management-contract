@@ -9,6 +9,7 @@ on:
     types:  
         - labeled
         - edited
+        - unlabeled
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,6 +18,8 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   detect-changes:
+    # Only run the job when these labels are detected on the issue
+    if: contains(github.event.issue.labels.*.name, 'release-type-current') && contains(github.event.issue.labels.*.name, 'create-release')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
@@ -30,27 +33,25 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      
-    #   - name: Execute Gh Commands
-    #     run: |
-    #         gh --version
-    #         gh issue list --label bug
-    #     env:
-    #       GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
-
-    #   - name: Create Release 
-    #     if: contains(github.event.issue.labels.*.name, 'release-type-current') 
-    #     run: |
-    #         echo "creating release v0.0.1 for issue ${{github.event.issue.id}}"
-    #         echo "Contains release type current"
-    #     env:
-    #       GH_TOKEN: ${{secrets.ACCESS_TOKEN}}
+      - name: Default Value for Release Type
+        run: |
+            echo "RELEASE_TYPE=minor" >> "$GITHUB_ENV"
+   
+      - name: Determine the release type is Major
+        if: contains(github.event.issue.labels.*.name, 'major')
+        run: |
+            echo "RELEASE_TYPE=major" >> "$GITHUB_ENV"
+      - name: Determine the release type is Minor
+        if: contains(github.event.issue.labels.*.name, 'minor')
+        run: |
+            echo "RELEASE_TYPE=minor" >> "$GITHUB_ENV"    
+      # Refer here for documentation on this runner: https://github.com/zendesk/action-create-release/tree/master#example-workflow---create-a-release
       - name: Create Release With Tag
         id: create-release
         uses: zendesk/action-create-release@v1
         with:
-          auto_increment_type: prerelease
-          prerelease: true
+          auto_increment_type: $RELEASE_TYPE
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
           
