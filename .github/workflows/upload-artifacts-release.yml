@@ -69,4 +69,4 @@ jobs:
           token: ${{secrets.ACCESS_TOKEN}}
           append_body: true
           files: |
-            */*.jar
+            **/*.jar
