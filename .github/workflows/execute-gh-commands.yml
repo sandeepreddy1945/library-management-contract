@@ -76,6 +76,8 @@ jobs:
           asset_content_type: application/text
           asset_name: Release.txt
           asset_path: Release.txt
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
 
       - name: Comment and Close the Release Issue
         run: |
